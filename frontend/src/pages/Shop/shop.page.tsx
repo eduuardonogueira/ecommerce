@@ -13,11 +13,14 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { Delete, NavigateNext, TuneRounded } from "@mui/icons-material";
+import { NavigateNext, TuneRounded } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { HOME_ROUTE } from "@constants/routes";
 import { SHOP_ROUTE } from "../../constants/routes";
 import { ShopBanner } from "@assets/img";
+import SvgGridBigRound from "@assets/icons/GridBigRound";
+import SvgViewList from "@assets/icons/ViewList";
+import cn from "classnames";
 
 export const Shop = () => {
   const { getProducts } = useApi();
@@ -34,9 +37,9 @@ export const Shop = () => {
   const [params, setParams] = useState<IProductFilters | undefined>(
     getParams()
   );
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [order, setOrder] = useState("");
   const pageDetails = getPageDetails(pageInfo);
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
   const breadcrumbs = [
     <Link to={HOME_ROUTE} className={style.link}>
       Home
@@ -45,6 +48,7 @@ export const Shop = () => {
       Shop
     </Link>,
   ];
+  const filterOptions = [{ value: "true", label: "isNew" }];
 
   function handleChangePage(page: number) {
     setPageInfo((prev) => ({ ...prev, page }));
@@ -86,7 +90,7 @@ export const Shop = () => {
 
     fecthData();
     // eslint-disable-next-line
-  }, [pageInfo.page, pageInfo.pageSize]);
+  }, [pageInfo.page, pageInfo.pageSize, params]);
 
   useEffect(() => {
     if (products) {
@@ -119,20 +123,43 @@ export const Shop = () => {
               <Button
                 onClick={() => setMenuIsOpen(true)}
                 startIcon={<TuneRounded />}
+                className={style.filterButton}
               >
                 Filter
               </Button>
-              <Menu open={menuIsOpen} onClose={() => setMenuIsOpen(false)}>
-                <MenuItem value={4}></MenuItem>
-                <MenuItem value={8}>8</MenuItem>
-                <MenuItem value={16}>16</MenuItem>
-                <MenuItem value={32}>32</MenuItem>
+              <Menu
+                open={menuIsOpen}
+                onClose={() => setMenuIsOpen(false)}
+                className={style.filterMenu}
+              >
+                {filterOptions.map((item, index) => (
+                  <MenuItem
+                    className={cn({
+                      [style.itemActive]: params?.isNew === "true",
+                    })}
+                    key={index}
+                    onClick={() =>
+                      setParams((prev) => ({
+                        ...prev,
+                        isNew: prev?.isNew === "" ? "true" : "",
+                      }))
+                    }
+                  >
+                    {item.label}
+                  </MenuItem>
+                ))}
               </Menu>
-              <IconButton aria-label="delete">
-                <Delete />
+              <IconButton
+                aria-label="delete"
+                sx={{ color: "#000", padding: 0 }}
+              >
+                <SvgViewList />
               </IconButton>
-              <IconButton aria-label="delete">
-                <Delete />
+              <IconButton
+                aria-label="delete"
+                sx={{ color: "#000", padding: 0 }}
+              >
+                <SvgGridBigRound />
               </IconButton>
               <Divider orientation="vertical" flexItem />
               <p>{pageDetails}</p>
