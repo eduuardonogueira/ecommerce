@@ -1,0 +1,46 @@
+{
+  "styles for current component import": {
+    "prefix": "ss",
+    "body": [
+      "import style from './${TM_FILENAME_BASE/^(.*?)(\\.component|\\.page)?$/$1/}.module.scss'"
+    ]
+  },
+  "Composes for get global classes": {
+    "prefix": "cp",
+    "body": [
+      "composes: ${1:Class} from global;"
+    ]
+  },
+  "initialize react component": {
+    "prefix": "rc",
+    "body": [
+      "export const ${TM_FILENAME_BASE/^(.)(.*?)(\\.component|\\.page)?$/${1:/capitalize}$2/} = () => {",
+      "  return (",
+      "    <h1>",
+      "      ${TM_FILENAME_BASE/^(.)(.*?)(\\.component|\\.page)?$/${1:/capitalize}$2/}",
+      "    </h1>",
+      "  )",
+      "}"
+    ]
+  },
+  "useState": {
+    "prefix": "st",
+    "body": "const [${1}, set${1/(^[a-zA-Z])(.*)/${1:/upcase}${2}/}] = useState(${0})",
+    "description": "use state but it camel cases"
+  },
+  "Svg": {
+    "prefix": "svg",
+    "body": [
+      "import {ReactComponent as ${1:Foo}}  from '@assets/icons/${2:foo}.svg'"
+    ]
+  },
+  "ClassNames": {
+    "prefix": "cls",
+    "body": ["className={style.${1:clasname}}"],
+    "description": "use for scss classnames"
+  },
+  "Image": {
+    "prefix": "img",
+    "body": ["export { default as ${1:Foo} } from './${2:foo}'"]
+  }
+}

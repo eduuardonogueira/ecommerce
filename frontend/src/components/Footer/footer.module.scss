@@ -1,0 +1,95 @@
+.container {
+  border-top: 1px solid var(--gray-50);
+  padding-block: 48px 38px;
+}
+
+.footerWrapper {
+  display: grid;
+  grid-template-columns: 1fr repeat(3, auto);
+  grid-template-rows: auto 1fr auto auto;
+  grid-template-areas:
+    "logo links help newsletter"
+    "address links help newsletter"
+    "divisor divisor divisor divisor"
+    "copyright copyright copyright copyright ";
+  column-gap: 24px;
+  row-gap: 55px;
+  max-width: 1272px;
+  composes: container from global;
+  box-sizing: border-box;
+}
+
+.logo {
+  grid-area: logo;
+  composes: textLg--bold from global;
+}
+
+.address {
+  grid-area: address;
+  composes: textSm from global;
+  color: var(--gray-200);
+  justify-self: start;
+}
+
+.links {
+  grid-area: links;
+}
+
+.help {
+  grid-area: help;
+}
+
+.newsletter {
+  grid-area: newsletter;
+}
+
+.divisor {
+  grid-area: divisor;
+  border: 1px solid var(--gray-50);
+  margin: unset;
+  width: 100%;
+}
+
+.copyright {
+  grid-area: copyright;
+}
+
+.links,
+.help,
+.newsletter {
+  display: flex;
+  flex-direction: column;
+  gap: 46px;
+}
+
+.link {
+  composes: textSm--medium from global;
+  text-decoration: none;
+  text-transform: capitalize;
+
+  &:hover {
+    color: var(--yellow-900);
+  }
+}
+
+.subtitle {
+  composes: textSm--medium from global;
+  color: var(--gray-200);
+  margin-bottom: 10px;
+}
+
+.form {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.button {
+  composes: textXs from global;
+  font-weight: 600;
+  text-transform: uppercase;
+  border: none;
+  background: none;
+  padding-block: 7px;
+  border-bottom: 1px solid var(--black);
+}

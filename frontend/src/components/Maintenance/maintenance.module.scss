@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100dvh - 94px);
+  width: 100%;
+}
+
+.maintenance {
+  max-width: 1080px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+}
+
+.title {
+  composes: title from global;
+}
+
+.text {
+  composes: textSm from global;
+  text-align: center;
+  max-width: 550px;
+}

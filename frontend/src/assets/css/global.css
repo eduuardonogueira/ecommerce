@@ -1,0 +1,134 @@
+body {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.poppins {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.montserrat {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.textXXs {
+  font-size: 0.813rem;
+  line-height: 1rem;
+  font-weight: 400;
+  color: var(--black);
+}
+
+.textXXs--medium {
+  font-size: 0.813rem;
+  line-height: 1rem;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.textXs {
+  font-size: 0.875rem;
+  line-height: 1rem;
+  font-weight: 400;
+  color: var(--black);
+}
+
+.textSm {
+  font-size: 1rem;
+  line-height: 1.2rem;
+  font-weight: 400;
+  color: var(--black);
+}
+
+.textSm--medium {
+  font-size: 1rem;
+  line-height: 1.2rem;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.textMd {
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+  color: var(--black);
+}
+
+.textMd--medium {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.5rem;
+  color: var(--black);
+}
+
+.textLg {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 400;
+  color: var(--black);
+}
+
+.textLg--medium {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.textLg--bold {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--black);
+}
+
+/* .textXl {
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--black);
+} */
+
+.titleXXXs {
+  font-size: 2rem;
+  line-height: 2.5rem;
+  font-weight: bold;
+  color: var(--black);
+}
+
+.titleXXs {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.titleXs {
+  font-size: 2.625rem;
+  line-height: 3rem;
+  font-weight: bold;
+  color: var(--black);
+}
+
+.titleMd {
+  font-size: 2.5rem;
+  line-height: 3rem;
+  font-weight: bold;
+  color: var(--black);
+}
+
+.title {
+  font-size: 3rem;
+  line-height: 4rem;
+  font-weight: 600;
+  color: var(--black);
+}

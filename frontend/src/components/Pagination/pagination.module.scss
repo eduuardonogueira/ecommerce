@@ -1,0 +1,28 @@
+.button {
+  padding: 15px 26px;
+  background: var(--yellow-100);
+  font-size: 1.25rem;
+  color: var(--black);
+  transition: 0.5s ease;
+  border-radius: 10px;
+  text-transform: capitalize;
+  border: none;
+
+  &:hover {
+    background: var(--yellow-900);
+    color: var(--white);
+    cursor: pointer;
+  }
+}
+
+.buttonActive {
+  background: var(--yellow-900);
+  color: var(--white);
+}
+
+.paginationContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 38px;
+}

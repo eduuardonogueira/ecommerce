@@ -1,0 +1,56 @@
+.container {
+  composes: container from global;
+  background: var(--yellow-100);
+  box-sizing: border-box;
+}
+
+.bannerWrapper {
+  padding-block: 100px;
+  max-width: 1350px;
+  margin: auto;
+}
+
+.certificatesWrapper {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: start;
+  gap: 55px;
+  flex-wrap: wrap;
+}
+
+.certificate {
+  flex-grow: 1;
+}
+
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.svg {
+  display: inline;
+  width: 60px;
+  height: 60px;
+}
+
+.title {
+  font-size: 1.563rem;
+  line-height: 2rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.text {
+  display: block;
+  composes: textMd--medium from global;
+  color: var(--gray-200);
+}

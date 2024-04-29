@@ -1,0 +1,55 @@
+.menu {
+  display: flex;
+  box-sizing: border-box;
+}
+
+.menuWrapper {
+  display: flex;
+  max-width: 1080px;
+  padding: 30px 64px;
+  margin: auto;
+  box-sizing: border-box;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  height: min-content;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  > p {
+    font-size: 2.1rem;
+    font-weight: 700;
+  }
+}
+
+.menuNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 40%;
+}
+
+.link {
+  composes: textSm--medium from global;
+  text-transform: capitalize;
+  text-decoration: none;
+
+  &:hover {
+    color: var(--yellow-900);
+  }
+}
+
+.activeLink {
+  color: var(--yellow-900);
+}
+
+.menuButtons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 25%;
+}
