@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { ProductsList, Pagination, Banner } from "@components/index";
+import { ProductsList, Pagination } from "@components/index";
 import { IProduct, IProductFilters } from "@customtypes/product";
 import { useApi, useStore, useParams } from "@hooks/index";
 import style from "./shop.module.scss";
 import {
-  Breadcrumbs,
   Button,
   Divider,
   IconButton,
@@ -13,19 +12,19 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { NavigateNext, TuneRounded } from "@mui/icons-material";
-import { Link } from "react-router-dom";
-import { HOME_ROUTE } from "@constants/routes";
-import { SHOP_ROUTE } from "../../constants/routes";
-import { ShopBanner } from "@assets/img";
+import { TuneRounded } from "@mui/icons-material";
 import SvgGridBigRound from "@assets/icons/GridBigRound";
 import SvgViewList from "@assets/icons/ViewList";
 import cn from "classnames";
+import { ICategory } from "@customtypes/category";
 
 export const Shop = () => {
-  const { getProducts } = useApi();
+  console.log("renderizou o App");
+  const { getProducts, getCategories } = useApi();
   const { getParams } = useParams();
   const { sortProductbyPrice, getPageDetails } = useStore();
+
+  const [category, setCategory] = useState<ICategory[]>();
   const [products, setProducts] = useState<IProduct[]>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [pageInfo, setPageInfo] = useState({
@@ -34,21 +33,16 @@ export const Shop = () => {
     pageQty: 1,
     totalItems: 0,
   });
+
+  const [order, setOrder] = useState("");
   const [params, setParams] = useState<IProductFilters | undefined>(
     getParams()
   );
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const [order, setOrder] = useState("");
-  const pageDetails = getPageDetails(pageInfo);
-  const breadcrumbs = [
-    <Link to={HOME_ROUTE} className={style.link}>
-      Home
-    </Link>,
-    <Link to={SHOP_ROUTE} className={style.lastLink}>
-      Shop
-    </Link>,
-  ];
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
   const filterOptions = [{ value: "true", label: "isNew" }];
+  const pageDetails = getPageDetails(pageInfo);
 
   function handleChangePage(page: number) {
     setPageInfo((prev) => ({ ...prev, page }));
@@ -65,7 +59,19 @@ export const Shop = () => {
     }));
   }
 
+  function handleClickMenuItem() {}
+
+  const handleClickMenu = async (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+
+    if (params) {
+      console.log(Object.keys(params));
+    }
+    console.log(category);
+  };
+
   useEffect(() => {
+    console.log("atualizou os produtos");
     setIsLoading(true);
     async function fecthData() {
       try {
@@ -93,6 +99,7 @@ export const Shop = () => {
   }, [pageInfo.page, pageInfo.pageSize, params]);
 
   useEffect(() => {
+    console.log("atualizou a ordem");
     if (products) {
       const sortedProducts = sortProductbyPrice(products, order);
       setProducts(sortedProducts);
@@ -100,50 +107,43 @@ export const Shop = () => {
     // eslint-disable-next-line
   }, [order]);
 
+  useEffect(() => {
+    console.log("atualizou categoria");
+    async function fetchCategories() {
+      const data = await getCategories();
+      setCategory(data);
+    }
+
+    fetchCategories();
+  }, []);
+
   return (
     <>
-      <section className={style.banner}>
-        <img src={ShopBanner} alt="" className={style.bannerImage} />
-        <div className={style.bannerWrapper}>
-          <h2 className={style.bannerTitle}>Shop</h2>
-          <Breadcrumbs
-            separator={
-              <NavigateNext sx={{ color: "black", marginInline: "0px" }} />
-            }
-          >
-            {breadcrumbs}
-          </Breadcrumbs>
-        </div>
-      </section>
-
       <section className={style.filters}>
         {products ? (
           <div className={style.filterWrapper}>
             <div className={style.options}>
               <Button
-                onClick={() => setMenuIsOpen(true)}
+                onClick={handleClickMenu}
                 startIcon={<TuneRounded />}
                 className={style.filterButton}
               >
                 Filter
               </Button>
               <Menu
-                open={menuIsOpen}
-                onClose={() => setMenuIsOpen(false)}
+                anchorEl={anchorEl}
+                open={open}
                 className={style.filterMenu}
+                onClose={() => setAnchorEl(null)}
               >
                 {filterOptions.map((item, index) => (
                   <MenuItem
                     className={cn({
-                      [style.itemActive]: params?.isNew === "true",
+                      [style.itemActive]: params?.isNew,
                     })}
                     key={index}
-                    onClick={() =>
-                      setParams((prev) => ({
-                        ...prev,
-                        isNew: prev?.isNew === "" ? "true" : "",
-                      }))
-                    }
+                    onClick={handleClickMenuItem}
+                    // selected={}
                   >
                     {item.label}
                   </MenuItem>
@@ -208,8 +208,6 @@ export const Shop = () => {
         />
         <Pagination props={pageInfo} changePage={handleChangePage} />
       </section>
-
-      <Banner />
     </>
   );
 };

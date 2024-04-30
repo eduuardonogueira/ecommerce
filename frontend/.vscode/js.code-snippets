@@ -23,6 +23,18 @@
       "}"
     ]
   },
+  "initialize react component layout": {
+    "prefix": "rcl",
+    "body": [
+      "export const ${TM_FILENAME_BASE/^(.)(.*?)(\\.layout)?$/${1:/capitalize}$2/}${2:Layout} = () => {",
+      "  return (",
+      "    <h1>",
+      "      ${TM_FILENAME_BASE/^(.)(.*?)(\\.layout)?$/${1:/capitalize}$2/}${2:Layout}",
+      "    </h1>",
+      "  )",
+      "}"
+    ]
+  },
   "useState": {
     "prefix": "st",
     "body": "const [${1}, set${1/(^[a-zA-Z])(.*)/${1:/upcase}${2}/}] = useState(${0})",

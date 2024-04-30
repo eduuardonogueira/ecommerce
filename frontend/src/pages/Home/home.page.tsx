@@ -1,7 +1,7 @@
 import style from "./home.module.scss";
 import { useEffect, useState } from "react";
 import { IProduct, ICategory } from "@customtypes/index";
-import { Banner, CategoriesList, ProductsList } from "@components/index";
+import { CategoriesList, ProductsList } from "@components/index";
 import { useApi } from "@hooks/useApi";
 import { Button } from "@mui/material";
 import { SHOP_ROUTE } from "@constants/routes";
@@ -77,7 +77,6 @@ export const Home = () => {
           </Button>
         </section>
       </div>
-      <Banner />
     </>
   );
 };

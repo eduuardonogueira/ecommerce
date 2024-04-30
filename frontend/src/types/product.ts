@@ -8,7 +8,6 @@ export type IProductData = {
   }
 }
 
-
 export type IProduct = {
   id: number;
   name: string;

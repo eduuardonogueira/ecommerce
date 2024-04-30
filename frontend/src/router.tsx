@@ -1,5 +1,6 @@
 import {
   ABOUT_ROUTE,
+  CART_ROUTE,
   CONTACT_ROUTE,
   HOME_ROUTE,
   NOT_FOUND_ROUTE,
@@ -9,7 +10,7 @@ import {
 import { About, Contact, Shop, NotFound, Product } from "@pages/index";
 import { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Footer, Header } from "./components/index";
+import { DefaultLayout, BannerLayout } from "./layouts";
 
 export const RouterAllRoutes = () => {
   const Home = lazy(() => import("@pages/Home/home.page"));
@@ -17,22 +18,31 @@ export const RouterAllRoutes = () => {
 
   return (
     <>
-      <Header />
-      <main>
-        <Suspense>
-          <Routes>
-            <Route path={HOME_ROUTE} element={<Home />} />
+      <Suspense>
+        <Routes>
+          <Route element={<DefaultLayout />}>
+            <Route index path={HOME_ROUTE} element={<Home />} />
+            <Route path={PRODUCT_ROUTE_DEFINITION} element={<Product />} />
+          </Route>
+
+          <Route element={<BannerLayout />}>
             <Route path={SHOP_ROUTE} element={<Shop />} />
             <Route path={ABOUT_ROUTE} element={<About />} />
             <Route path={CONTACT_ROUTE} element={<Contact />} />
-            <Route path={PRODUCT_ROUTE_DEFINITION} element={<Product />} />
+            <Route
+              path={CART_ROUTE}
+              element={
+                <div>
+                  <h1>Olá</h1>
+                </div>
+              }
+            />
+          </Route>
 
-            <Route path={NOT_FOUND_ROUTE} element={<NotFound />} />
-            <Route path="*" element={<Navigate to={NOT_FOUND_ROUTE} />} />
-          </Routes>
-        </Suspense>
-      </main>
-      <Footer />
+          <Route path={NOT_FOUND_ROUTE} element={<NotFound />} />
+          <Route path="*" element={<Navigate to={NOT_FOUND_ROUTE} />} />
+        </Routes>
+      </Suspense>
     </>
   );
 };

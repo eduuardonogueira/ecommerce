@@ -1,0 +1,46 @@
+.banner {
+  position: relative;
+  height: 316px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.bannerWrapper {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 40%;
+  left: calc(50% - 44px);
+}
+
+.bannerTitle {
+  composes: title from global;
+  text-transform: capitalize;
+}
+
+.bannerImage {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.link,
+.lastLink {
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  line-height: 1.2rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  text-decoration: none;
+  color: var(--black);
+
+  &:hover {
+    color: var(--black);
+  }
+}
+
+.lastLink {
+  font-weight: 400;
+}

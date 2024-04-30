@@ -5,3 +5,4 @@ export const CONTACT_ROUTE = '/contact'
 export const PRODUCT_ROUTE = (id: string) => `/product/${id}`
 export const PRODUCT_ROUTE_DEFINITION = '/product/:id'
 export const NOT_FOUND_ROUTE = '/404'
+export const CART_ROUTE = '/cart/page2'
