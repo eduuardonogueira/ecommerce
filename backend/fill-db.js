@@ -51,7 +51,7 @@ class CreateProduct {
       redirect: 'follow',
     };
 
-    fetch('http://localhost:3000/product/register', requestOptions).catch(
+    fetch('http://localhost:5000/product/register', requestOptions).catch(
       (error) => console.error(error),
     );
   }
