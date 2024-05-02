@@ -18,7 +18,8 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    async function init() {
+    setIsLoading(true);
+    async function fetchData() {
       try {
         const categories = await getCategories();
         const { products } = await getProducts(
@@ -29,12 +30,12 @@ export const Home = () => {
         setProductsData(products);
         setIsLoading(false);
       } catch (err) {
-        /* empty */
+        console.error(err);
+      } finally {
+        setIsLoading(false);
       }
     }
-    // setTimeout(init, 5000);
-    setIsLoading(true);
-    init();
+    fetchData();
     // eslint-disable-next-line
   }, []);
 

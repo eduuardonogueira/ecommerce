@@ -88,7 +88,7 @@ export const Shop = () => {
         const sortedProducts = sortProductbyPrice(products, order);
         setProducts(sortedProducts);
       } catch (err) {
-        console.log(err);
+        console.error(err);
       } finally {
         setIsLoading(false);
       }
@@ -110,8 +110,12 @@ export const Shop = () => {
   useEffect(() => {
     console.log("atualizou categoria");
     async function fetchCategories() {
-      const data = await getCategories();
-      setCategory(data);
+      try {
+        const categories = await getCategories();
+        setCategory(categories);
+      } catch (err) {
+        console.error(err);
+      }
     }
 
     fetchCategories();

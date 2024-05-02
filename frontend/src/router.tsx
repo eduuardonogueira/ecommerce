@@ -7,13 +7,13 @@ import {
   PRODUCT_ROUTE_DEFINITION,
   SHOP_ROUTE,
 } from "@constants/routes";
-import { About, Contact, Shop, NotFound, Product } from "@pages/index";
+import { About, Contact, Shop, NotFound, Product, Home } from "@pages/index";
 import { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { DefaultLayout, BannerLayout } from "./layouts";
 
 export const RouterAllRoutes = () => {
-  const Home = lazy(() => import("@pages/Home/home.page"));
+  // const Home = lazy(() => import("@pages/Home/home.page"));
   //fallback={AppLoader}
 
   return (

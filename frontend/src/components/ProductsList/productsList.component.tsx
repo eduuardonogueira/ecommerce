@@ -75,6 +75,10 @@ export const ProductsList = ({
   pageSize?: number;
   isLoading: boolean;
 }) => {
+  if (!isLoading && (!products || products.length === 0)) {
+    return <p>No products found.</p>;
+  }
+
   return (
     <section className={style.productsWrapper}>
       {(isLoading ? Array.from(new Array(pageSize || 8)) : products)?.map(

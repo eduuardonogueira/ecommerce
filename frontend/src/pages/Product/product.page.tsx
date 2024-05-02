@@ -137,7 +137,7 @@ export const Product = () => {
           }
         }
       } catch (err) {
-        console.log(err);
+        console.error(err);
       } finally {
         setIsLoading(false);
       }
