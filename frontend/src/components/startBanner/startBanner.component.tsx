@@ -28,8 +28,10 @@ export const StartBanner = () => {
       return resultSliced;
     }
 
-    return HOME_ROUTE;
+    return result;
   }
+
+  // pages.map((_, index) => console.log("page: ", getPagePath(index)));
 
   return (
     <section className={style.banner}>
@@ -52,7 +54,6 @@ export const StartBanner = () => {
               {page ? page : "Home"}
             </Link>
           ))}
-          ,
         </Breadcrumbs>
       </div>
     </section>

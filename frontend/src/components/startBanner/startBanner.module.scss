@@ -1,17 +1,17 @@
 .banner {
   position: relative;
   height: 316px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
   width: 100%;
 }
 
 .bannerWrapper {
-  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
-  top: 40%;
-  left: calc(50% - 44px);
 }
 
 .bannerTitle {
@@ -20,10 +20,12 @@
 }
 
 .bannerImage {
+  position: absolute;
   height: 100%;
   width: 100%;
   object-fit: cover;
   object-position: center;
+  z-index: -1;
 }
 
 .link,

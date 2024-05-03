@@ -21,21 +21,41 @@
 .options {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 8px;
 }
 
-.options .filterButton {
+.options > p {
+  margin-left: 18px;
+}
+
+.options .filterButton:first-child {
   font-family: "Poppins", sans-serif;
   font-size: 1rem;
   line-height: 1.2rem;
   font-weight: 400;
-  color: var(--black);
-  padding: unset;
   text-transform: capitalize;
 }
 
-.itemActive {
-  background: var(--gray-200);
+.options .filterButton {
+  color: var(--black);
+
+  &:hover {
+    color: var(--white);
+    background: var(--gray-600);
+  }
+}
+
+.options .filterButtonActive {
+  color: var(--white);
+  background: var(--gray-600);
+}
+
+.filterMenu .menuItemTitle {
+  font-weight: bold;
+}
+
+.filterMenu div ul li {
+  width: 200px;
 }
 
 .show,

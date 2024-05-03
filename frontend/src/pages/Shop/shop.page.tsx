@@ -7,19 +7,20 @@ import {
   Button,
   Divider,
   IconButton,
+  ListItemIcon,
+  ListItemText,
   Menu,
   MenuItem,
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { TuneRounded } from "@mui/icons-material";
+import { Check, TuneRounded } from "@mui/icons-material";
 import SvgGridBigRound from "@assets/icons/GridBigRound";
 import SvgViewList from "@assets/icons/ViewList";
-import cn from "classnames";
 import { ICategory } from "@customtypes/category";
+import cn from "classnames";
 
 export const Shop = () => {
-  console.log("renderizou o App");
   const { getProducts, getCategories } = useApi();
   const { getParams } = useParams();
   const { sortProductbyPrice, getPageDetails } = useStore();
@@ -41,7 +42,10 @@ export const Shop = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const filterOptions = [{ value: "true", label: "isNew" }];
+  const filterOptions: { key: keyof IProductFilters; label: string }[] = [
+    { key: "isNew", label: "New" },
+    { key: "discountPercent", label: "Discount" },
+  ];
   const pageDetails = getPageDetails(pageInfo);
 
   function handleChangePage(page: number) {
@@ -59,19 +63,25 @@ export const Shop = () => {
     }));
   }
 
-  function handleClickMenuItem() {}
+  function handleClickMenuCategories(categoryName: string) {
+    setParams((prev) => ({
+      ...prev,
+      category: prev?.category === categoryName ? undefined : categoryName,
+    }));
+  }
+
+  function handleClickMenuFilter(key: keyof IProductFilters) {
+    setParams((prev) => ({
+      ...prev,
+      [key]: prev && prev[key] === "true" ? undefined : "true",
+    }));
+  }
 
   const handleClickMenu = async (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
-
-    if (params) {
-      console.log(Object.keys(params));
-    }
-    console.log(category);
   };
 
   useEffect(() => {
-    console.log("atualizou os produtos");
     setIsLoading(true);
     async function fecthData() {
       try {
@@ -99,7 +109,6 @@ export const Shop = () => {
   }, [pageInfo.page, pageInfo.pageSize, params]);
 
   useEffect(() => {
-    console.log("atualizou a ordem");
     if (products) {
       const sortedProducts = sortProductbyPrice(products, order);
       setProducts(sortedProducts);
@@ -108,7 +117,6 @@ export const Shop = () => {
   }, [order]);
 
   useEffect(() => {
-    console.log("atualizou categoria");
     async function fetchCategories() {
       try {
         const categories = await getCategories();
@@ -130,7 +138,9 @@ export const Shop = () => {
               <Button
                 onClick={handleClickMenu}
                 startIcon={<TuneRounded />}
-                className={style.filterButton}
+                className={cn(style.filterButton, {
+                  [style.filterButtonActive]: anchorEl,
+                })}
               >
                 Filter
               </Button>
@@ -138,32 +148,56 @@ export const Shop = () => {
                 anchorEl={anchorEl}
                 open={open}
                 className={style.filterMenu}
+                sx={{ mt: 1.5 }}
                 onClose={() => setAnchorEl(null)}
               >
+                <MenuItem disabled className={style.menuItemTitle}>
+                  Products
+                </MenuItem>
                 {filterOptions.map((item, index) => (
                   <MenuItem
-                    className={cn({
-                      [style.itemActive]: params?.isNew,
-                    })}
                     key={index}
-                    onClick={handleClickMenuItem}
-                    // selected={}
+                    onClick={() => handleClickMenuFilter(item.key)}
                   >
-                    {item.label}
+                    {params && params[item.key] ? (
+                      <>
+                        <ListItemIcon>
+                          <Check />
+                        </ListItemIcon>
+                        {item.label}
+                      </>
+                    ) : (
+                      <ListItemText inset>{item.label}</ListItemText>
+                    )}
+                  </MenuItem>
+                ))}
+                <Divider />
+                <MenuItem disabled className={style.menuItemTitle}>
+                  Categories
+                </MenuItem>
+                {category?.map((item, index) => (
+                  <MenuItem
+                    key={index}
+                    onClick={() => handleClickMenuCategories(item.name)}
+                  >
+                    {params?.category === item.name ? (
+                      <>
+                        <ListItemIcon>
+                          <Check />
+                        </ListItemIcon>{" "}
+                        {item.name}
+                      </>
+                    ) : (
+                      <ListItemText inset>{item.name}</ListItemText>
+                    )}
                   </MenuItem>
                 ))}
               </Menu>
-              <IconButton
-                aria-label="delete"
-                sx={{ color: "#000", padding: 0 }}
-              >
-                <SvgViewList />
-              </IconButton>
-              <IconButton
-                aria-label="delete"
-                sx={{ color: "#000", padding: 0 }}
-              >
+              <IconButton className={style.filterButton} aria-label="delete">
                 <SvgGridBigRound />
+              </IconButton>
+              <IconButton className={style.filterButton} aria-label="delete">
+                <SvgViewList />
               </IconButton>
               <Divider orientation="vertical" flexItem />
               <p>{pageDetails}</p>

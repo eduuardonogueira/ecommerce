@@ -20,11 +20,6 @@ export const RouterAllRoutes = () => {
     <>
       <Suspense>
         <Routes>
-          <Route element={<DefaultLayout />}>
-            <Route index path={HOME_ROUTE} element={<Home />} />
-            <Route path={PRODUCT_ROUTE_DEFINITION} element={<Product />} />
-          </Route>
-
           <Route element={<BannerLayout />}>
             <Route path={SHOP_ROUTE} element={<Shop />} />
             <Route path={ABOUT_ROUTE} element={<About />} />
@@ -39,8 +34,13 @@ export const RouterAllRoutes = () => {
             />
           </Route>
 
-          <Route path={NOT_FOUND_ROUTE} element={<NotFound />} />
-          <Route path="*" element={<Navigate to={NOT_FOUND_ROUTE} />} />
+          <Route element={<DefaultLayout />}>
+            <Route index path={HOME_ROUTE} element={<Home />} />
+            <Route path={PRODUCT_ROUTE_DEFINITION} element={<Product />} />
+
+            <Route path={NOT_FOUND_ROUTE} element={<NotFound />} />
+            <Route path="*" element={<Navigate to={NOT_FOUND_ROUTE} />} />
+          </Route>
         </Routes>
       </Suspense>
     </>
