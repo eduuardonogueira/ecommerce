@@ -4,7 +4,6 @@ import { Breadcrumbs } from "@mui/material";
 import { ShopBanner } from "@assets/img";
 import { Link, useLocation } from "react-router-dom";
 import cn from "classnames";
-import { HOME_ROUTE } from "@constants/routes";
 
 export const StartBanner = () => {
   const location = useLocation();

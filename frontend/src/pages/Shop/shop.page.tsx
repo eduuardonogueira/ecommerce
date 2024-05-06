@@ -68,6 +68,7 @@ export const Shop = () => {
       ...prev,
       category: prev?.category === categoryName ? undefined : categoryName,
     }));
+    setPageInfo((prev) => ({ ...prev, page: 1 }));
   }
 
   function handleClickMenuFilter(key: keyof IProductFilters) {
@@ -75,6 +76,7 @@ export const Shop = () => {
       ...prev,
       [key]: prev && prev[key] === "true" ? undefined : "true",
     }));
+    setPageInfo((prev) => ({ ...prev, page: 1 }));
   }
 
   const handleClickMenu = async (event: React.MouseEvent<HTMLElement>) => {
@@ -127,6 +129,7 @@ export const Shop = () => {
     }
 
     fetchCategories();
+    // eslint-disable-next-line
   }, []);
 
   return (
