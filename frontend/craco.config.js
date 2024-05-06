@@ -10,8 +10,8 @@ if (enviroment !== "production") {
     throw envPath.error;
   }
 
-  const env = DotEnv.config({ path: `./.env.${enviroment}` }).parsed;
-  const envLocal = DotEnv.config({ path: "./.env.local" }).parsed || {};
+  const env = DotEnv.config({ path: `.env.${enviroment}` }).parsed;
+  const envLocal = DotEnv.config({ path: ".env.local" }).parsed || {};
 
   const envKeys = Object.keys(env).reduce((prev, next) => {
     prev[`process.env.${next.trim()}`] = envLocal[next]
