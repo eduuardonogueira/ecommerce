@@ -3,10 +3,17 @@ const DotEnv = require("dotenv");
 const webpack = require("webpack");
 
 const enviroment = process.env.DEPLOY_ENV || "development";
-const envPath = DotEnv.config({ path: `./.env.${enviroment}` });
 
-if (envPath.error) {
-  throw envPath.error;
+if (enviroment !== "production") {
+  const envPath = DotEnv.config({ path: `.env.${enviroment}` });
+  if (envPath.error) {
+    throw envPath.error;
+  }
+} else {
+  const envPath = DotEnv.config({ path: ".env" });
+  if (envPath.error) {
+    throw envPath.error;
+  }
 }
 
 const env = DotEnv.config({ path: `./.env.${enviroment}` }).parsed;

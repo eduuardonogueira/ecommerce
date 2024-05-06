@@ -26,8 +26,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "dev": "set DEPLOY_ENV=development&& craco start",
-    "start": "set DEPLOY_ENV=production&& craco start",
+    "dev": "set DEPLOY_ENV=development.local&& craco start",
+    "start": "set DEPLOY_ENV=production.local&& craco start",
+    "vercel": "set DEPLOY_ENV=production&& craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject",
