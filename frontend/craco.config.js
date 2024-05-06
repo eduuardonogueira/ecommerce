@@ -5,12 +5,12 @@ const webpack = require("webpack");
 const enviroment = process.env.DEPLOY_ENV || "production";
 
 if (enviroment !== "production") {
-  // const envPath = DotEnv.config({ path: `.env.${enviroment}` });
-  // if (envPath.error) {
-  //   throw envPath.error;
-  // }
+  const envPath = DotEnv.config({ path: `/.env.${enviroment}` });
+  if (envPath.error) {
+    throw envPath.error;
+  }
 } else {
-  const envPath = DotEnv.config({ path: ".env" });
+  const envPath = DotEnv.config({ path: "/.env" });
   if (envPath.error) {
     throw envPath.error;
   }
