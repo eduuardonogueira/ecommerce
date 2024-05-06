@@ -2,7 +2,7 @@ const { CracoAliasPlugin } = require("react-app-alias");
 const DotEnv = require("dotenv");
 const webpack = require("webpack");
 
-const enviroment = process.env.DEPLOY_ENV || "development";
+const enviroment = process.env.DEPLOY_ENV || "production";
 
 if (enviroment !== "production") {
   const envPath = DotEnv.config({ path: `.env.${enviroment}` });
