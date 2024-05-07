@@ -34,15 +34,12 @@ class CreateProduct {
       description: this.product.description.slice(0, 250),
       largeDescription: `${this.product.description} \n ${this.product.title}`,
       isNew: this.trueOrFalse[getRandomNumber(0, 1)],
-      imageLink: this.product.image,
+      imageLink: this.product.thumbnail,
       discountPrice: this.discountPrice,
       discountPercent: this.discountPercent,
-      otherImagesLink: [
-        'https://i.postimg.cc/XYD2ts21/miniatura1-sofa.png',
-        'https://i.postimg.cc/XYvH2Rgy/miniatura2-sofa.png',
-        'https://i.postimg.cc/DzJCh1Hv/miniatura3-sofa.png',
-        'https://i.postimg.cc/KY608Rhn/miniatura4-sofa.png',
-      ],
+      otherImagesLink: this.product.images.filter(
+        (item) => !item.includes('thumbnail'),
+      ),
     });
     const requestOptions = {
       method: 'POST',
@@ -58,7 +55,8 @@ class CreateProduct {
 }
 
 async function getProductInformation(number) {
-  return fetch(`https://fakestoreapi.com/products/${number.toString()}`).then(
+  // `https://fakestoreapi.com/products/${number.toString()}`
+  return fetch(`https://dummyjson.com/products/${number.toString()}`).then(
     (res) => res.json(),
   );
 }
@@ -79,10 +77,14 @@ function createProductsInDb(numProducts) {
   return Promise.all(productPromises);
 }
 
-createProductsInDb(30)
+createProductsInDb(50)
   .then(() => {
     console.log('All requests were concluded');
   })
   .catch((error) => {
     console.error('Somethin is wrong:', error);
   });
+
+// for (let i = 0; i <= 20; i++) {
+//   getProductInformation(i);
+// }

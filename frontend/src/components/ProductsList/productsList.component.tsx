@@ -23,7 +23,7 @@ const ProductCard = ({ props }: { props: IProduct }) => {
       )}
       {props.isNew ? <span className={style.isNew}>New</span> : ""}
 
-      <img className={style.image} src={props.imageLink} alt="" />
+      <img className={style.image} src={props.imageLink} alt={props.name} />
 
       <div className={style.productInfo}>
         <h4 className={style.name}>{props.name}</h4>

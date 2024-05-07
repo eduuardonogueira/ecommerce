@@ -4,6 +4,7 @@ import axios from 'axios'
 
 export function useApi() {
   const url = process.env.REACT_APP_BACKEND_URL
+
   async function getProduct(id: string) {
     const { data } = await axios.get<IProduct>(`${url}/product/${id}`)
     return data

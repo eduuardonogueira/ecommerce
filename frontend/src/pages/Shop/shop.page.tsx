@@ -178,20 +178,21 @@ export const Shop = () => {
                 <MenuItem disabled className={style.menuItemTitle}>
                   Categories
                 </MenuItem>
-                {category?.map((item, index) => (
+                {category?.map((category, index) => (
                   <MenuItem
                     key={index}
-                    onClick={() => handleClickMenuCategories(item.name)}
+                    onClick={() => handleClickMenuCategories(category.name)}
+                    className={style.menuItemText}
                   >
-                    {params?.category === item.name ? (
+                    {params?.category === category.name ? (
                       <>
                         <ListItemIcon>
                           <Check />
-                        </ListItemIcon>{" "}
-                        {item.name}
+                        </ListItemIcon>
+                        {category.name}
                       </>
                     ) : (
-                      <ListItemText inset>{item.name}</ListItemText>
+                      <ListItemText inset>{category.name}</ListItemText>
                     )}
                   </MenuItem>
                 ))}
