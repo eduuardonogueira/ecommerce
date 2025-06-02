@@ -23,7 +23,7 @@ const ProductCard = ({ props }: { props: IProduct }) => {
       )}
       {props.isNew ? <span className={style.isNew}>New</span> : ""}
 
-      <img className={style.image} src={props.imageLink} alt="" />
+      <img className={style.image} src={props.imageLink} alt={props.name} />
 
       <div className={style.productInfo}>
         <h4 className={style.name}>{props.name}</h4>
@@ -75,6 +75,10 @@ export const ProductsList = ({
   pageSize?: number;
   isLoading: boolean;
 }) => {
+  if (!isLoading && (!products || products.length === 0)) {
+    return <p>No products found.</p>;
+  }
+
   return (
     <section className={style.productsWrapper}>
       {(isLoading ? Array.from(new Array(pageSize || 8)) : products)?.map(

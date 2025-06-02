@@ -94,10 +94,14 @@ function createProductsInDb(numProducts) {
 }
 
 createCategoriesInDb();
-createProductsInDb(30)
+createProductsInDb(50)
   .then(() => {
     console.log('All requests were concluded');
   })
   .catch((error) => {
     console.error('Somethin is wrong:', error);
   });
+
+// for (let i = 0; i <= 20; i++) {
+//   getProductInformation(i);
+// }

@@ -1,31 +1,31 @@
 import { useEffect, useState } from "react";
-import { ProductsList, Pagination, Banner } from "@components/index";
+import { ProductsList, Pagination } from "@components/index";
 import { IProduct, IProductFilters } from "@customtypes/product";
 import { useApi, useStore, useParams } from "@hooks/index";
 import style from "./shop.module.scss";
 import {
-  Breadcrumbs,
   Button,
   Divider,
   IconButton,
+  ListItemIcon,
+  ListItemText,
   Menu,
   MenuItem,
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { NavigateNext, TuneRounded } from "@mui/icons-material";
-import { Link } from "react-router-dom";
-import { HOME_ROUTE } from "@constants/routes";
-import { SHOP_ROUTE } from "../../constants/routes";
-import { ShopBanner } from "@assets/img";
+import { Check, TuneRounded } from "@mui/icons-material";
 import SvgGridBigRound from "@assets/icons/GridBigRound";
 import SvgViewList from "@assets/icons/ViewList";
+import { ICategory } from "@customtypes/category";
 import cn from "classnames";
 
 export const Shop = () => {
-  const { getProducts } = useApi();
+  const { getProducts, getCategories } = useApi();
   const { getParams } = useParams();
   const { sortProductbyPrice, getPageDetails } = useStore();
+
+  const [category, setCategory] = useState<ICategory[]>();
   const [products, setProducts] = useState<IProduct[]>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [pageInfo, setPageInfo] = useState({
@@ -34,21 +34,19 @@ export const Shop = () => {
     pageQty: 1,
     totalItems: 0,
   });
+
+  const [order, setOrder] = useState("");
   const [params, setParams] = useState<IProductFilters | undefined>(
     getParams()
   );
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const [order, setOrder] = useState("");
-  const pageDetails = getPageDetails(pageInfo);
-  const breadcrumbs = [
-    <Link to={HOME_ROUTE} className={style.link}>
-      Home
-    </Link>,
-    <Link to={SHOP_ROUTE} className={style.lastLink}>
-      Shop
-    </Link>,
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const filterOptions: { key: keyof IProductFilters; label: string }[] = [
+    { key: "isNew", label: "New" },
+    { key: "discountPercent", label: "Discount" },
   ];
-  const filterOptions = [{ value: "true", label: "isNew" }];
+  const pageDetails = getPageDetails(pageInfo);
 
   function handleChangePage(page: number) {
     setPageInfo((prev) => ({ ...prev, page }));
@@ -64,6 +62,26 @@ export const Shop = () => {
       pageSize: parseInt(event.target.value),
     }));
   }
+
+  function handleClickMenuCategories(categoryName: string) {
+    setParams((prev) => ({
+      ...prev,
+      category: prev?.category === categoryName ? undefined : categoryName,
+    }));
+    setPageInfo((prev) => ({ ...prev, page: 1 }));
+  }
+
+  function handleClickMenuFilter(key: keyof IProductFilters) {
+    setParams((prev) => ({
+      ...prev,
+      [key]: prev && prev[key] === "true" ? undefined : "true",
+    }));
+    setPageInfo((prev) => ({ ...prev, page: 1 }));
+  }
+
+  const handleClickMenu = async (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -82,7 +100,7 @@ export const Shop = () => {
         const sortedProducts = sortProductbyPrice(products, order);
         setProducts(sortedProducts);
       } catch (err) {
-        console.log(err);
+        console.error(err);
       } finally {
         setIsLoading(false);
       }
@@ -100,66 +118,90 @@ export const Shop = () => {
     // eslint-disable-next-line
   }, [order]);
 
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const categories = await getCategories();
+        setCategory(categories);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    fetchCategories();
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <>
-      <section className={style.banner}>
-        <img src={ShopBanner} alt="" className={style.bannerImage} />
-        <div className={style.bannerWrapper}>
-          <h2 className={style.bannerTitle}>Shop</h2>
-          <Breadcrumbs
-            separator={
-              <NavigateNext sx={{ color: "black", marginInline: "0px" }} />
-            }
-          >
-            {breadcrumbs}
-          </Breadcrumbs>
-        </div>
-      </section>
-
       <section className={style.filters}>
         {products ? (
           <div className={style.filterWrapper}>
             <div className={style.options}>
               <Button
-                onClick={() => setMenuIsOpen(true)}
+                onClick={handleClickMenu}
                 startIcon={<TuneRounded />}
-                className={style.filterButton}
+                className={cn(style.filterButton, {
+                  [style.filterButtonActive]: anchorEl,
+                })}
               >
                 Filter
               </Button>
               <Menu
-                open={menuIsOpen}
-                onClose={() => setMenuIsOpen(false)}
+                anchorEl={anchorEl}
+                open={open}
                 className={style.filterMenu}
+                sx={{ mt: 1.5 }}
+                onClose={() => setAnchorEl(null)}
               >
+                <MenuItem disabled className={style.menuItemTitle}>
+                  Products
+                </MenuItem>
                 {filterOptions.map((item, index) => (
                   <MenuItem
-                    className={cn({
-                      [style.itemActive]: params?.isNew === "true",
-                    })}
                     key={index}
-                    onClick={() =>
-                      setParams((prev) => ({
-                        ...prev,
-                        isNew: prev?.isNew === "" ? "true" : "",
-                      }))
-                    }
+                    onClick={() => handleClickMenuFilter(item.key)}
                   >
-                    {item.label}
+                    {params && params[item.key] ? (
+                      <>
+                        <ListItemIcon>
+                          <Check />
+                        </ListItemIcon>
+                        {item.label}
+                      </>
+                    ) : (
+                      <ListItemText inset>{item.label}</ListItemText>
+                    )}
+                  </MenuItem>
+                ))}
+                <Divider />
+                <MenuItem disabled className={style.menuItemTitle}>
+                  Categories
+                </MenuItem>
+                {category?.map((category, index) => (
+                  <MenuItem
+                    key={index}
+                    onClick={() => handleClickMenuCategories(category.name)}
+                    className={style.menuItemText}
+                  >
+                    {params?.category === category.name ? (
+                      <>
+                        <ListItemIcon>
+                          <Check />
+                        </ListItemIcon>
+                        {category.name}
+                      </>
+                    ) : (
+                      <ListItemText inset>{category.name}</ListItemText>
+                    )}
                   </MenuItem>
                 ))}
               </Menu>
-              <IconButton
-                aria-label="delete"
-                sx={{ color: "#000", padding: 0 }}
-              >
-                <SvgViewList />
-              </IconButton>
-              <IconButton
-                aria-label="delete"
-                sx={{ color: "#000", padding: 0 }}
-              >
+              <IconButton className={style.filterButton} aria-label="delete">
                 <SvgGridBigRound />
+              </IconButton>
+              <IconButton className={style.filterButton} aria-label="delete">
+                <SvgViewList />
               </IconButton>
               <Divider orientation="vertical" flexItem />
               <p>{pageDetails}</p>
@@ -208,8 +250,6 @@ export const Shop = () => {
         />
         <Pagination props={pageInfo} changePage={handleChangePage} />
       </section>
-
-      <Banner />
     </>
   );
 };

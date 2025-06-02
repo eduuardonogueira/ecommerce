@@ -16,6 +16,7 @@
     "@types/react-dom": "^18.2.25",
     "axios": "^1.6.8",
     "classnames": "^2.5.1",
+    "dotenv": "^16.4.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
@@ -25,8 +26,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
+    "dev": "set DEPLOY_ENV=development.local&& craco start",
+    "start": "set DEPLOY_ENV=production.local&& craco start",
+    "vercel": "set DEPLOY_ENV=production&& craco start",
+    "build": "export DEPLOY_ENV=production&& craco build",
     "test": "craco test",
     "eject": "craco eject",
     "icon:create": "npx @svgr/cli -- ./src/assets/svg/*.svg"
