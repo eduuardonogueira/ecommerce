@@ -1,3 +1,5 @@
+// const baseUrl = 'https://ecommerce-compass.onrender.com';
+const baseUrl = 'http://localhost:3001';
 const headers = new Headers();
 headers.append('Content-Type', 'application/json');
 
@@ -12,6 +14,7 @@ class CreateProduct {
     this.product = product;
     this.discountPrice;
     this.discountPercent;
+    this.category = product.category;
   }
 
   hasDiscount() {
@@ -24,25 +27,36 @@ class CreateProduct {
     }
   }
 
+  async createCategory() {
+    const bodyData = {
+      name: this.category.name,
+      imageLink: this.category.image,
+    };
+    const requestOptions = {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(bodyData),
+      redirect: 'follow',
+    };
+
+    const response = await fetch(`${baseUrl}/category`, requestOptions);
+    return response.json();
+  }
+
   createProduct() {
     this.hasDiscount();
     const raw = JSON.stringify({
       name: this.product.title.slice(0, 50),
       sku: 'SS001',
-      categoryId: getRandomNumber(2, 4),
+      categoryId: await(this.createCategory()).id,
       price: this.product.price,
       description: this.product.description.slice(0, 250),
       largeDescription: `${this.product.description} \n ${this.product.title}`,
       isNew: this.trueOrFalse[getRandomNumber(0, 1)],
-      imageLink: this.product.image,
+      imageLink: this.product.images[0],
       discountPrice: this.discountPrice,
       discountPercent: this.discountPercent,
-      otherImagesLink: [
-        'https://i.postimg.cc/XYD2ts21/miniatura1-sofa.png',
-        'https://i.postimg.cc/XYvH2Rgy/miniatura2-sofa.png',
-        'https://i.postimg.cc/DzJCh1Hv/miniatura3-sofa.png',
-        'https://i.postimg.cc/KY608Rhn/miniatura4-sofa.png',
-      ],
+      otherImagesLink: this.product.images,
     });
     const requestOptions = {
       method: 'POST',
@@ -51,22 +65,22 @@ class CreateProduct {
       redirect: 'follow',
     };
 
-    fetch('http://localhost:3000/product/register', requestOptions).catch(
-      (error) => console.error(error),
+    fetch(`${baseUrl}/product/register`, requestOptions).catch((error) =>
+      console.error(error),
     );
   }
 }
 
 async function getProductInformation(number) {
-  return fetch(`https://fakestoreapi.com/products/${number.toString()}`).then(
-    (res) => res.json(),
-  );
+  return fetch(
+    `https://fakestoreapi.com/products/${(number + 163).toString()}`,
+  ).then((res) => res.json());
 }
 
 function createProductsInDb(numProducts) {
   const productPromises = [];
 
-  for (let i = 0; i < numProducts; i++) {
+  for (let i = 1; i <= numProducts; i++) {
     const productPromise = getProductInformation(i).then((json) => {
       console.log(json);
       const product = new CreateProduct(json);
@@ -79,6 +93,7 @@ function createProductsInDb(numProducts) {
   return Promise.all(productPromises);
 }
 
+createCategoriesInDb();
 createProductsInDb(30)
   .then(() => {
     console.log('All requests were concluded');
