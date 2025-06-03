@@ -28,10 +28,12 @@ class CreateProduct {
   }
 
   async createCategory() {
+    console.log('chamou');
     const bodyData = {
       name: this.category.name,
       imageLink: this.category.image,
     };
+    console.log(bodyData);
     const requestOptions = {
       method: 'POST',
       headers: headers,
@@ -43,12 +45,13 @@ class CreateProduct {
     return response.json();
   }
 
-  createProduct() {
+  async createProduct() {
     this.hasDiscount();
-    const raw = JSON.stringify({
+    const createdCategory = await this.createCategory();
+    const productData = JSON.stringify({
       name: this.product.title.slice(0, 50),
       sku: 'SS001',
-      categoryId: await(this.createCategory()).id,
+      categoryId: createdCategory.id,
       price: this.product.price,
       description: this.product.description.slice(0, 250),
       largeDescription: `${this.product.description} \n ${this.product.title}`,
@@ -61,19 +64,27 @@ class CreateProduct {
     const requestOptions = {
       method: 'POST',
       headers: headers,
-      body: raw,
+      body: productData,
       redirect: 'follow',
     };
 
-    fetch(`${baseUrl}/product/register`, requestOptions).catch((error) =>
-      console.error(error),
-    );
+    try {
+      // const response = await fetch(
+      //   `${baseUrl}/product/register`,
+      //   requestOptions,
+      // );
+      // const data = await response.json();
+      // console.log('Product created:', data);
+      console.log('Product created:', productData);
+    } catch (error) {
+      console.error('Error creating product:', error);
+    }
   }
 }
 
 async function getProductInformation(number) {
   return fetch(
-    `https://fakestoreapi.com/products/${(number + 163).toString()}`,
+    `https://api.escuelajs.co/api/v1/products/${(number + 237).toString()}`,
   ).then((res) => res.json());
 }
 
@@ -81,10 +92,10 @@ function createProductsInDb(numProducts) {
   const productPromises = [];
 
   for (let i = 1; i <= numProducts; i++) {
-    const productPromise = getProductInformation(i).then((json) => {
+    const productPromise = getProductInformation(i).then(async (json) => {
       console.log(json);
       const product = new CreateProduct(json);
-      product.createProduct();
+      await product.createProduct();
     });
 
     productPromises.push(productPromise);
@@ -93,7 +104,6 @@ function createProductsInDb(numProducts) {
   return Promise.all(productPromises);
 }
 
-createCategoriesInDb();
 createProductsInDb(50)
   .then(() => {
     console.log('All requests were concluded');
