@@ -7,7 +7,7 @@ export function priceFormater(value: number, format: "money" | "percent") {
   });
   
   if (format === "money") {
-    return `Rp ${formatter.format(value)}`
+    return `R$ ${formatter.format(value)}`
 
   } else {
     return `-${value}%`

@@ -1,5 +1,7 @@
 // const baseUrl = 'https://ecommerce-compass.onrender.com';
-const baseUrl = 'http://localhost:3001';
+const baseUrl = 'https://ecommerce-compass.onrender.com';
+const startId = 360;
+
 const headers = new Headers();
 headers.append('Content-Type', 'application/json');
 
@@ -101,7 +103,7 @@ class CreateProduct {
 
 async function getProductInformation(number) {
   return fetch(
-    `https://api.escuelajs.co/api/v1/products/${(number + 380).toString()}`,
+    `https://api.escuelajs.co/api/v1/products/${(number + startId).toString()}`,
   ).then((res) => res.json());
 }
 
