@@ -28,14 +28,7 @@ export class ProductsController {
     @Query(new ValidationPipe({ transform: true }))
     paginationProductsDto: PaginationProductsDto,
   ) {
-    const { page, pageSize, category, ...productFields } =
-      paginationProductsDto;
-    return this.productsService.findAll({
-      page,
-      pageSize,
-      category,
-      productFields,
-    });
+    return this.productsService.findAll(paginationProductsDto);
   }
 
   @Get('/:id')

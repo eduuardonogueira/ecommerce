@@ -7,40 +7,48 @@ interface IProductsFilter {
   page: number;
   pageSize: number;
   category?: string;
-  productFields: {
-    name?: string;
-    sku?: string;
-    categoryId?: number;
-    price?: number;
-    discountPrice?: number;
-    discountPercent?: number;
-    isNew?: boolean;
-    createdAt?: Date;
-    updatedAt?: Date;
-  };
+  isNew?: boolean;
+  hasDiscount?: boolean;
 }
 
 @Injectable()
 export class ProductsService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll({ page, pageSize, category, productFields }: IProductsFilter) {
+  async findAll({
+    page,
+    pageSize,
+    category,
+    isNew,
+    hasDiscount,
+  }: IProductsFilter) {
     const products = await this.prisma.product.findMany({
       skip: (page - 1) * pageSize,
       take: pageSize,
-      where: { ...productFields, category: { name: category } },
+      where: {
+        isNew,
+        ...(hasDiscount === true ? { discountPercent: { gt: 0 } } : {}),
+        category: { name: { contains: category, mode: 'insensitive' } },
+      },
       include: { category: true },
     });
+
     if (!products) {
       throw new NotFoundException('Products not found');
     }
+
     const total = await this.prisma.product.count({
-      where: { ...productFields, category: { name: category } },
+      where: {
+        isNew,
+        ...(hasDiscount === true ? { discountPercent: { gt: 0 } } : {}),
+        category: { name: { contains: category, mode: 'insensitive' } },
+      },
     });
     const pageQty = Math.ceil(total / pageSize);
+
     return {
       products,
-      pagination: { pageQty, total },
+      pagination: { page, pageSize, pageQty, total },
     };
   }
 

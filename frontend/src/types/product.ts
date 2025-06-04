@@ -27,13 +27,8 @@ export type IProduct = {
 };
 
 export type IProductFilters = {
-  sku?: string;
-  categoryId?: string;
-  price?: string;
-  discountPrice?: string;
-  discountPercent?: string;
+  hasDiscount?: string;
   isNew?: string;
-  createdDate?: string;
-  updatedDate?: string;
   category?: string;
+  categoryId?: string;
 }

@@ -41,13 +41,30 @@ class CreateProduct {
       redirect: 'follow',
     };
 
-    const response = await fetch(`${baseUrl}/category`, requestOptions);
+    const response = await fetch(
+      `${baseUrl}/category/register`,
+      requestOptions,
+    );
+
+    if (response?.status === 500) {
+      console.log(`${baseUrl}/category/search?name=${this.category.name}`);
+      const response = await fetch(
+        `${baseUrl}/category/search?name=${this.category.name}`,
+        {
+          method: 'GET',
+        },
+      );
+
+      return response.json();
+    }
+
     return response.json();
   }
 
   async createProduct() {
     this.hasDiscount();
     const createdCategory = await this.createCategory();
+    console.log('\n category: ', createdCategory);
     const productData = JSON.stringify({
       name: this.product.title.slice(0, 50),
       sku: 'SS001',
@@ -69,13 +86,13 @@ class CreateProduct {
     };
 
     try {
-      // const response = await fetch(
-      //   `${baseUrl}/product/register`,
-      //   requestOptions,
-      // );
-      // const data = await response.json();
-      // console.log('Product created:', data);
-      console.log('Product created:', productData);
+      const response = await fetch(
+        `${baseUrl}/product/register`,
+        requestOptions,
+      );
+      const data = await response.json();
+      console.log('Product created:', data);
+      // console.log('Product created:', productData);
     } catch (error) {
       console.error('Error creating product:', error);
     }
@@ -84,7 +101,7 @@ class CreateProduct {
 
 async function getProductInformation(number) {
   return fetch(
-    `https://api.escuelajs.co/api/v1/products/${(number + 237).toString()}`,
+    `https://api.escuelajs.co/api/v1/products/${(number + 380).toString()}`,
   ).then((res) => res.json());
 }
 
@@ -93,7 +110,6 @@ function createProductsInDb(numProducts) {
 
   for (let i = 1; i <= numProducts; i++) {
     const productPromise = getProductInformation(i).then(async (json) => {
-      console.log(json);
       const product = new CreateProduct(json);
       await product.createProduct();
     });

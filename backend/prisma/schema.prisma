@@ -17,7 +17,7 @@ model Product {
   id               Int      @id @default(autoincrement())
   name             String   @unique @db.VarChar(50)
   sku              String   @db.VarChar(10)
-  category         Category @relation(fields: [categoryId], references: [id])
+  category         Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId       Int      @map("category_id")
   description      String   @db.VarChar(250)
   largeDescription String   @map("large_description") @db.VarChar(500)

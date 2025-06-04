@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CreateCategoryDto } from './dtos/create-category.dto';
 import { CategoriesService } from './categories.service';
 
@@ -10,6 +18,11 @@ export class CategoriesController {
   async getAllCategorys() {
     const categories = await this.categoriesService.getAll();
     return categories;
+  }
+
+  @Get('/search')
+  async findByName(@Query('name') name: string) {
+    return this.categoriesService.findByName(name);
   }
 
   @Get('/:id')

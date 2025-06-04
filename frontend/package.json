@@ -30,6 +30,7 @@
     "start": "set DEPLOY_ENV=production.local&& craco start",
     "vercel": "set DEPLOY_ENV=production&& craco start",
     "build": "export DEPLOY_ENV=production&& craco build",
+    "build-dev": "export DEPLOY_ENV=development.local&& craco build",
     "test": "craco test",
     "eject": "craco eject",
     "icon:create": "npx @svgr/cli -- ./src/assets/svg/*.svg"

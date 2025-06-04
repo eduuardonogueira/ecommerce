@@ -44,7 +44,7 @@ export const Shop = () => {
 
   const filterOptions: { key: keyof IProductFilters; label: string }[] = [
     { key: "isNew", label: "New" },
-    { key: "discountPercent", label: "Discount" },
+    { key: "hasDiscount", label: "Discount" },
   ];
   const pageDetails = getPageDetails(pageInfo);
 
@@ -231,7 +231,7 @@ export const Shop = () => {
                   displayEmpty
                 >
                   <MenuItem value="">Default</MenuItem>
-                  <MenuItem value="asc">Crescent</MenuItem>
+                  <MenuItem value="crescent">Crescent</MenuItem>
                   <MenuItem value="decreasing">Decreasing</MenuItem>
                 </Select>
               </div>

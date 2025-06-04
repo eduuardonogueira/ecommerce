@@ -24,6 +24,21 @@ export class CategoriesService {
     return category;
   }
 
+  async findByName(name: string) {
+    const category = await this.prisma.category.findFirst({
+      where: {
+        name: {
+          contains: name,
+          mode: 'insensitive',
+        },
+      },
+    });
+    if (!category) {
+      throw new NotFoundException('category not found');
+    }
+    return category;
+  }
+
   async create({ ...data }: CreateCategoryDto) {
     return this.prisma.category.create({
       data,

@@ -3,7 +3,7 @@ import { IProduct } from "@customtypes/product";
 export const useStore = () => {
   function sortProductbyPrice(products: IProduct[], order: string): IProduct[] {
     return [...products].sort((a, b) => {
-      if (order === "asc") {
+      if (order === "decreasing") {
         return (
           (b.discountPrice ? b.discountPrice : b.price) -
           (a.discountPrice ? a.discountPrice : a.price)

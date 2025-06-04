@@ -4,7 +4,6 @@ import {
   IsDate,
   IsEmpty,
   IsInt,
-  IsNumber,
   IsOptional,
   IsString,
   Length,
@@ -19,41 +18,18 @@ export class PaginationProductsDto {
   name: string;
 
   @IsOptional()
-  @IsEmpty()
-  @Length(1, 10)
-  @IsString()
-  sku: string;
-
-  @IsOptional()
   @IsString()
   category: string;
-
-  @Transform(({ value }) => parseInt(value))
-  @IsOptional()
-  @IsInt()
-  categoryId: number;
-
-  @Transform(({ value }) => parseFloat(value))
-  @IsOptional()
-  @Min(0.01)
-  @IsNumber()
-  price: number;
-
-  @Transform(({ value }) => parseFloat(value))
-  @IsOptional()
-  @Min(0.01)
-  @IsNumber()
-  discountPrice: number;
-
-  @Transform(({ value }) => parseInt(value))
-  @IsOptional()
-  @IsInt()
-  discountPercent: number;
 
   @Transform(({ value }) => Boolean(value))
   @IsOptional()
   @IsBoolean()
   isNew: boolean;
+
+  @Transform(({ value }) => Boolean(value))
+  @IsOptional()
+  @IsBoolean()
+  hasDiscount: boolean;
 
   @IsOptional()
   @Transform(({ value }) => parseInt(value))
